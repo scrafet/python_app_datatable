@@ -21,7 +21,7 @@ class CategoryListView(ListView):
     template_name = 'category/list.html'
 
     # @method_decorator(login_required) 'solicita login
-    @method_decorator(csrf_exempt)  #quita middleware
+    # @method_decorator(csrf_exempt)  quita middleware
     def dispatch(self, request, *args, **kwargs):
         # if request.method == 'GET':
         #     return redirect('erp:category_list2')
