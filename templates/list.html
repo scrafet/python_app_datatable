@@ -49,7 +49,18 @@
             });
 
             $('.btnTest').on('click', function (){
-                alert('%')
+                $.ajax({
+                    url:'{% url 'erp:category_list' %}',
+                    type: 'POST',
+                    data: {id:4},
+                    DataType:'json'                    
+                }).done( function (data) {
+                    console.log(data)
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    alert(textStatus + '= '+ errorThrown);
+                }).always(function (data) {
+
+                });
             });
         });
     </script>

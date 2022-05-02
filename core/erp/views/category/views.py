@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.http import JsonResponse,request
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
@@ -21,14 +21,22 @@ class CategoryListView(ListView):
     template_name = 'category/list.html'
 
     # @method_decorator(login_required) 'solicita login
-    # @method_decorator(csrf_exempt)  quita middleware
+    @method_decorator(csrf_exempt)   #quitaMiddleware
     def dispatch(self, request, *args, **kwargs):
         # if request.method == 'GET':
         #     return redirect('erp:category_list2')
         return super().dispatch(request, *args, **kwargs)
 
-    def __pos__(self):
-        data = {'name': 'William'}
+    @method_decorator(csrf_exempt)
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            # print(request.POST)
+            data = Category.objects.get(pk=request.POST['id']).toJSON()
+            # data['name'] = cat.name
+        except Exception as e:
+            data['error'] = str(e)
+
         return JsonResponse(data)
 
     def get_context_data(self, **kwargs):
